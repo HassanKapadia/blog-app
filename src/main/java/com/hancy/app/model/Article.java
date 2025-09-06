@@ -1,11 +1,5 @@
 package com.hancy.app.model;
 
-import java.util.ArrayList;
-import java.util.Date;
-import java.util.List;
-
-import org.springframework.data.annotation.CreatedDate;
-
 import jakarta.persistence.CascadeType;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
@@ -17,41 +11,117 @@ import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
 import jakarta.persistence.OneToMany;
 import jakarta.validation.constraints.NotNull;
-import lombok.AllArgsConstructor;
-import lombok.Data;
-import lombok.NoArgsConstructor;
+import java.util.ArrayList;
+import java.util.Date;
+import java.util.List;
+import org.springframework.data.annotation.CreatedDate;
 
 @Entity
-@Data
-@AllArgsConstructor
-@NoArgsConstructor
 public class Article {
 
-	@Id
-	@GeneratedValue(strategy = GenerationType.SEQUENCE)
-	private Long id;
+  @Id
+  @GeneratedValue(strategy = GenerationType.SEQUENCE)
+  private Long id;
 
-	@NotNull
-	private String title;
+  @NotNull private String title;
 
-	private String subTitle;
+  private String subTitle;
 
-	@NotNull
-	@Column(unique = true)
-	private String slug;
+  @NotNull
+  @Column(unique = true)
+  private String slug;
 
-	@NotNull
-	private String content;
+  @NotNull private String content;
 
-	@CreatedDate
-	private Date createdOn;
+  @CreatedDate private Date createdOn;
 
-	@ManyToOne(fetch = FetchType.LAZY, cascade = { CascadeType.PERSIST, CascadeType.MERGE })
-	@JoinColumn(name = "author")
-	@NotNull
-	private User author;
+  @ManyToOne(
+      fetch = FetchType.LAZY,
+      cascade = {CascadeType.PERSIST, CascadeType.MERGE})
+  @JoinColumn(name = "author")
+  @NotNull
+  private User author;
 
-	@OneToMany(mappedBy = "article", fetch = FetchType.LAZY, cascade = { CascadeType.PERSIST, CascadeType.MERGE })
-	private List<Comment> commentList = new ArrayList<>();
+  @OneToMany(
+      mappedBy = "article",
+      fetch = FetchType.LAZY,
+      cascade = {CascadeType.PERSIST, CascadeType.MERGE})
+  private List<Comment> commentList = new ArrayList<>();
 
+  public Article() {}
+
+  public Article(@NotNull String title, @NotNull String content, @NotNull User author) {
+    this.title = title;
+    this.content = content;
+    this.author = author;
+  }
+
+  public Long getId() {
+    return id;
+  }
+
+  public void setId(Long id) {
+    this.id = id;
+  }
+
+  public String getTitle() {
+    return title;
+  }
+
+  public void setTitle(String title) {
+    this.title = title;
+  }
+
+  public String getSubTitle() {
+    return subTitle;
+  }
+
+  public void setSubTitle(String subTitle) {
+    this.subTitle = subTitle;
+  }
+
+  public String getSlug() {
+    return slug;
+  }
+
+  public void setSlug(String slug) {
+    this.slug = slug;
+  }
+
+  public String getContent() {
+    return content;
+  }
+
+  public void setContent(String content) {
+    this.content = content;
+  }
+
+  public Date getCreatedOn() {
+    return createdOn;
+  }
+
+  public void setCreatedOn(Date createdOn) {
+    this.createdOn = createdOn;
+  }
+
+  public User getAuthor() {
+    return author;
+  }
+
+  public void setAuthor(User author) {
+    this.author = author;
+  }
+
+  public List<Comment> getCommentList() {
+    return commentList;
+  }
+
+  public void setCommentList(List<Comment> commentList) {
+    this.commentList = commentList;
+  }
+
+  public void addCommentListItem(Comment comment) {
+    getCommentList().add(comment);
+    comment.setArticle(this);
+  }
 }
