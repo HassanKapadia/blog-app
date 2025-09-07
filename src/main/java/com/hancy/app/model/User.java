@@ -25,7 +25,7 @@ public class User {
 
   @NotNull
   @Column(unique = true)
-  private String userName;
+  private String username;
 
   @NotNull
   @Column(unique = true)
@@ -51,8 +51,8 @@ public class User {
 
   public User() {}
 
-  public User(@NotNull String userName, @NotNull String email) {
-    this.userName = userName;
+  public User(@NotNull String username, @NotNull String email) {
+    this.username = username;
     this.email = email;
   }
 
@@ -64,12 +64,12 @@ public class User {
     this.id = id;
   }
 
-  public String getUserName() {
-    return userName;
+  public String getUsername() {
+    return username;
   }
 
-  public void setUserName(String userName) {
-    this.userName = userName;
+  public void setUsername(String username) {
+    this.username = username;
   }
 
   public String getEmail() {
@@ -128,5 +128,18 @@ public class User {
   public void addCommentListItem(Comment comment) {
     getCommentList().add(comment);
     comment.setCommentor(this);
+  }
+
+  @Override
+  public String toString() {
+    return "User [username="
+        + username
+        + ", email="
+        + email
+        + ", bio="
+        + bio
+        + ", createdOn="
+        + createdOn
+        + "]";
   }
 }

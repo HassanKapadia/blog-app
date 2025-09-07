@@ -33,7 +33,17 @@ public class UserRepositoryTests {
     userRepo.save(user);
     userRepo.flush();
 
-    User user1 = userRepo.findByUserName("hassank").get();
+    User user1 = userRepo.findByUsername("hassank").get();
+    Assertions.assertEquals("hassank", user1.getUsername());
+  }
+
+  @Test
+  public void checkSearchUserByEmail() {
+    User user = new User("hassank", "hsn.kapadia@gmail.com");
+    userRepo.save(user);
+    userRepo.flush();
+
+    User user1 = userRepo.findByEmail("hsn.kapadia@gmail.com").get();
     Assertions.assertEquals("hsn.kapadia@gmail.com", user1.getEmail());
   }
 }
