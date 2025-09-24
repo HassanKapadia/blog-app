@@ -50,12 +50,6 @@ public class Article {
 
   public Article() {}
 
-  public Article(@NotNull String title, @NotNull String content, @NotNull User author) {
-    this.title = title;
-    this.content = content;
-    this.author = author;
-  }
-
   public Long getId() {
     return id;
   }

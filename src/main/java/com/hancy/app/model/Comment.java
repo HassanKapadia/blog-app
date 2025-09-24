@@ -39,12 +39,6 @@ public class Comment {
 
   public Comment() {}
 
-  public Comment(@NotNull String comment, @NotNull Article article, @NotNull User commentor) {
-    this.comment = comment;
-    this.article = article;
-    this.commentor = commentor;
-  }
-
   public Long getId() {
     return id;
   }

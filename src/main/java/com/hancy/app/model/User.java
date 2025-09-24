@@ -10,6 +10,7 @@ import jakarta.persistence.Id;
 import jakarta.persistence.OneToMany;
 import jakarta.persistence.Table;
 import jakarta.validation.constraints.NotNull;
+import jakarta.validation.constraints.Size;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
@@ -23,9 +24,15 @@ public class User {
   @GeneratedValue(strategy = GenerationType.SEQUENCE)
   private Long id;
 
+  @NotNull private String name;
+
   @NotNull
   @Column(unique = true)
   private String username;
+
+  @NotNull
+  @Size(min = 8, message = "Password must be atleast 8 characters long")
+  private String password;
 
   @NotNull
   @Column(unique = true)
@@ -51,11 +58,6 @@ public class User {
 
   public User() {}
 
-  public User(@NotNull String username, @NotNull String email) {
-    this.username = username;
-    this.email = email;
-  }
-
   public Long getId() {
     return id;
   }
@@ -64,12 +66,28 @@ public class User {
     this.id = id;
   }
 
+  public String getName() {
+    return name;
+  }
+
+  public void setName(String name) {
+    this.name = name;
+  }
+
   public String getUsername() {
     return username;
   }
 
   public void setUsername(String username) {
     this.username = username;
+  }
+
+  public String getPassword() {
+    return password;
+  }
+
+  public void setPassword(String password) {
+    this.password = password;
   }
 
   public String getEmail() {
@@ -132,14 +150,6 @@ public class User {
 
   @Override
   public String toString() {
-    return "User [username="
-        + username
-        + ", email="
-        + email
-        + ", bio="
-        + bio
-        + ", createdOn="
-        + createdOn
-        + "]";
+    return "User [name=" + name + ", username=" + username + ", email=" + email + "]";
   }
 }

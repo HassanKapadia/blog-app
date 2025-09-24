@@ -15,21 +15,23 @@ public class UserRepositoryTests {
 
   @Test
   public void canCreateUser() {
-    User user = new User("hassank", "hsn.kapadia@gmail.com");
+    User user = createUser();
+
     userRepo.save(user);
     userRepo.flush();
   }
 
   @Test
   public void checkNullableUser() {
-    User user = new User(null, "hsn.kapadia@gmail.com");
+    User user = createUser();
+    user.setUsername(null);
     userRepo.save(user);
     assertThrows(Exception.class, () -> userRepo.flush());
   }
 
   @Test
   public void checkSearchUserByUsername() {
-    User user = new User("hassank", "hsn.kapadia@gmail.com");
+    User user = createUser();
     userRepo.save(user);
     userRepo.flush();
 
@@ -39,11 +41,20 @@ public class UserRepositoryTests {
 
   @Test
   public void checkSearchUserByEmail() {
-    User user = new User("hassank", "hsn.kapadia@gmail.com");
+    User user = createUser();
     userRepo.save(user);
     userRepo.flush();
 
     User user1 = userRepo.findByEmail("hsn.kapadia@gmail.com").get();
     Assertions.assertEquals("hsn.kapadia@gmail.com", user1.getEmail());
+  }
+
+  protected User createUser() {
+    User user = new User();
+    user.setName("Hassan Kapadia");
+    user.setUsername("hassank");
+    user.setEmail("hsn.kapadia@gmail.com");
+    user.setPassword("StrongPassword");
+    return user;
   }
 }

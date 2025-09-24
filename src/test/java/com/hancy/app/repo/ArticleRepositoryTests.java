@@ -36,7 +36,11 @@ public class ArticleRepositoryTests {
   }
 
   protected void createAuthor() {
-    User user = new User("hassank", "hsn.kapadia@gmail.com");
+    User user = new User();
+    user.setName("Hassan Kapadia");
+    user.setUsername("hassank");
+    user.setEmail("hsn.kapadia@gmail.com");
+    user.setPassword("StrongPassword");
     userRepo.save(user);
     userRepo.flush();
   }
@@ -46,8 +50,11 @@ public class ArticleRepositoryTests {
     User author = userRepo.findByUsername("hassank").get();
     String title = "Article 1";
     String slug = "article-1";
-    Article article = new Article(title, "This is an article for tests", author);
+    Article article = new Article();
+    article.setTitle(title);
     article.setSlug(slug);
+    article.setContent("This is an article for tests");
+    article.setAuthor(author);
 
     return article;
   }
