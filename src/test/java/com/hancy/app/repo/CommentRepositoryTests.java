@@ -33,7 +33,7 @@ public class CommentRepositoryTests {
 
     createArticle();
     String title = "Article 1";
-    String slug = title.replace("\\s+", "-");
+    String slug = title.toLowerCase().replace("\\s+", "-");
     Article article = articleRepo.findBySlug(slug).get();
     comment.setArticle(article);
 
