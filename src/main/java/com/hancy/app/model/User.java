@@ -8,6 +8,7 @@ import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.OneToMany;
+import jakarta.persistence.SequenceGenerator;
 import jakarta.persistence.Table;
 import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Size;
@@ -21,7 +22,11 @@ import org.springframework.data.annotation.CreatedDate;
 public class User {
 
   @Id
-  @GeneratedValue(strategy = GenerationType.SEQUENCE)
+  @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "blog_user_seq")
+  @SequenceGenerator(
+      name = "blog_user_seq",
+      sequenceName = "blog_user_sequence",
+      allocationSize = 1)
   private Long id;
 
   @NotNull private String name;

@@ -83,8 +83,15 @@ public class UserServiceImpl implements UserService {
 
   @Override
   public User loginUser(LoginUserDTO loginUser) {
-    // TODO Auto-generated method stub
-    return null;
+    Optional<User> user = userRepo.findByUsername(loginUser.getUsername());
+    if (!user.isPresent()) {
+      throw new UserNotFoundException(loginUser.getUsername());
+    }
+    User savedUser = user.get();
+    if (!savedUser.getPassword().equals(loginUser.getPassword())) {
+      throw new IllegalAccessError("Incorrect username or password!");
+    }
+    return savedUser;
   }
 
   public static class UserNotFoundException extends IllegalArgumentException {

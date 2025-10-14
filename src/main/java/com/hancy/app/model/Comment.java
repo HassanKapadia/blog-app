@@ -8,6 +8,7 @@ import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
+import jakarta.persistence.SequenceGenerator;
 import jakarta.validation.constraints.NotNull;
 import java.util.Date;
 import org.springframework.data.annotation.CreatedDate;
@@ -16,7 +17,8 @@ import org.springframework.data.annotation.CreatedDate;
 public class Comment {
 
   @Id
-  @GeneratedValue(strategy = GenerationType.SEQUENCE)
+  @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "comment_seq")
+  @SequenceGenerator(name = "comment_seq", sequenceName = "comment_sequence", allocationSize = 1)
   private Long id;
 
   @NotNull private String comment;

@@ -10,6 +10,7 @@ import jakarta.persistence.Id;
 import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
 import jakarta.persistence.OneToMany;
+import jakarta.persistence.SequenceGenerator;
 import jakarta.validation.constraints.NotNull;
 import java.util.ArrayList;
 import java.util.Date;
@@ -20,7 +21,8 @@ import org.springframework.data.annotation.CreatedDate;
 public class Article {
 
   @Id
-  @GeneratedValue(strategy = GenerationType.SEQUENCE)
+  @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "article_seq")
+  @SequenceGenerator(name = "article_seq", sequenceName = "article_sequence", allocationSize = 1)
   private Long id;
 
   @NotNull private String title;
