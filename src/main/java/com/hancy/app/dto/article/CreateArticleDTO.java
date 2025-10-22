@@ -7,6 +7,7 @@ public class CreateArticleDTO {
   @NotNull private String title;
   private String subTitle;
   @NotNull private String content;
+  @NotNull private Long authorId;
 
   public CreateArticleDTO() {}
 
@@ -32,5 +33,13 @@ public class CreateArticleDTO {
 
   public void setContent(String content) {
     this.content = content;
+  }
+
+  public Long getAuthorId() {
+    return authorId;
+  }
+
+  public void setAuthorId(Long authorId) {
+    this.authorId = authorId;
   }
 }

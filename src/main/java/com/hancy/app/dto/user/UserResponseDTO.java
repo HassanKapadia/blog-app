@@ -85,7 +85,7 @@ public class UserResponseDTO {
   }
 
   public static List<UserResponseDTO> createResponse(List<User> userList) {
-    List<UserResponseDTO> userResponseList = new ArrayList();
+    List<UserResponseDTO> userResponseList = new ArrayList<>();
     if (ObjectUtils.isNotEmpty(userList)) {
       for (User user : userList) {
         userResponseList.add(createResponse(user));

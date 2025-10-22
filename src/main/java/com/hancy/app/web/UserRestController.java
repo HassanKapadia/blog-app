@@ -1,14 +1,18 @@
 package com.hancy.app.web;
 
+import com.hancy.app.common.constants.BlogAppConstants;
 import com.hancy.app.common.dto.ErrorResponseDTO;
 import com.hancy.app.dto.user.CreateUserDTO;
 import com.hancy.app.dto.user.LoginUserDTO;
 import com.hancy.app.dto.user.UserResponseDTO;
 import com.hancy.app.model.User;
+import com.hancy.app.security.JwtTokenUtil;
 import com.hancy.app.service.user.UserService;
 import com.hancy.app.service.user.UserServiceImpl.UserNotFoundException;
 import java.net.URI;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -20,27 +24,36 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 @RestController
-@RequestMapping("/users")
-public class UserController {
+@RequestMapping("/api/users")
+public class UserRestController {
 
-  protected UserService userService;
+  private final UserService userService;
+  private final JwtTokenUtil jwtTokenUtil;
 
   @Autowired
-  public UserController(UserService userService) {
+  public UserRestController(UserService userService, JwtTokenUtil jwtTokenUtil) {
     this.userService = userService;
+    this.jwtTokenUtil = jwtTokenUtil;
   }
 
   @PostMapping("/signup")
   public ResponseEntity<UserResponseDTO> signUpUser(@RequestBody CreateUserDTO createUser) {
     User createdUser = userService.createUser(createUser);
-    URI createdUserURI = URI.create("users/" + createdUser.getId());
+    URI createdUserURI = URI.create(BlogAppConstants.API_USER + "/" + createdUser.getId());
     return ResponseEntity.created(createdUserURI).body(UserResponseDTO.createResponse(createdUser));
   }
 
   @PostMapping("/login")
-  public ResponseEntity<UserResponseDTO> loginUser(@RequestBody LoginUserDTO loginUser) {
+  public ResponseEntity<Map<String, Object>> loginUser(@RequestBody LoginUserDTO loginUser) {
     User savedUser = userService.loginUser(loginUser);
-    return ResponseEntity.ok(UserResponseDTO.createResponse(savedUser));
+    UserResponseDTO userResponse = UserResponseDTO.createResponse(savedUser);
+    String token = jwtTokenUtil.generateToken(userResponse.getId(), userResponse.getUsername());
+
+    Map<String, Object> response = new HashMap<String, Object>();
+    response.put(BlogAppConstants.AUTH_USER, userResponse);
+    response.put(BlogAppConstants.AUTH_TOKEN_JWT, token);
+
+    return ResponseEntity.ok(response);
   }
 
   @GetMapping("/")
