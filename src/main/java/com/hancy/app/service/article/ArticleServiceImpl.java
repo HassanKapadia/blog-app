@@ -6,6 +6,7 @@ import com.hancy.app.model.Article;
 import com.hancy.app.model.User;
 import com.hancy.app.repo.ArticleRepository;
 import com.hancy.app.service.user.UserService;
+import java.util.Date;
 import java.util.List;
 import java.util.Optional;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -47,6 +48,7 @@ public class ArticleServiceImpl implements ArticleService {
     article.setTitle(createArticle.getTitle());
     article.setSubTitle(createArticle.getSubTitle());
     article.setContent(createArticle.getContent());
+    article.setCreatedOn(new Date());
 
     String slug = article.getTitle().toLowerCase().replace("\\s+", "-");
     article.setSlug(slug);

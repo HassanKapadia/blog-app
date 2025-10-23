@@ -42,7 +42,7 @@ public class CommentServiceTest {
 
     CommentDTO commentDTO = new CommentDTO();
     commentDTO.setComment("Great article");
-    comment = commentService.createComment(user.getId(), article.getId(), commentDTO);
+    comment = commentService.createComment(user.getId(), article.getId(), commentDTO.getComment());
   }
 
   @Test
@@ -70,7 +70,7 @@ public class CommentServiceTest {
         IllegalAccessException.class,
         () ->
             commentService.updateComment(
-                user.getId(), article.getId(), comment.getId(), updateComment));
+                user.getId(), article.getId(), comment.getId(), updateComment.getComment()));
   }
 
   protected CreateUserDTO createUser() {

@@ -1,6 +1,5 @@
 package com.hancy.app.service.comment;
 
-import com.hancy.app.dto.comment.CommentDTO;
 import com.hancy.app.model.Article;
 import com.hancy.app.model.Comment;
 import com.hancy.app.model.User;
@@ -8,6 +7,7 @@ import com.hancy.app.repo.CommentRepository;
 import com.hancy.app.service.article.ArticleService;
 import com.hancy.app.service.user.UserService;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 import java.util.Optional;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -29,13 +29,14 @@ public class CommentServiceImpl implements CommentService {
   }
 
   @Override
-  public Comment createComment(Long commentorId, Long articleId, CommentDTO createComment) {
+  public Comment createComment(Long commentorId, Long articleId, String commentText) {
     User commentor = userService.getUserById(commentorId);
     Article article = articleService.getArticleById(articleId);
 
     Comment comment = new Comment();
-    comment.setComment(createComment.getComment());
+    comment.setComment(commentText);
     comment.setArticle(article);
+    comment.setCreatedOn(new Date());
     comment.setCommentor(commentor);
 
     return commentRepo.save(comment);
@@ -43,7 +44,7 @@ public class CommentServiceImpl implements CommentService {
 
   @Override
   public Comment updateComment(
-      Long commentorId, Long articleId, Long commentId, CommentDTO updateComment)
+      Long commentorId, Long articleId, Long commentId, String updateCommentText)
       throws IllegalAccessException {
     User commentor = userService.getUserById(commentorId);
     Article article = articleService.getArticleById(articleId);
@@ -62,7 +63,7 @@ public class CommentServiceImpl implements CommentService {
       throw new IllegalAccessException(
           "Comment does not belong to the article: " + article.getTitle());
     }
-    savedComment.setComment(updateComment.getComment());
+    savedComment.setComment(updateCommentText);
 
     return commentRepo.save(savedComment);
   }

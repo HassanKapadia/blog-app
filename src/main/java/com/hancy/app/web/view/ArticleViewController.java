@@ -95,7 +95,6 @@ public class ArticleViewController {
     HttpHeaders headers = new HttpHeaders();
     String jwtToken = (String) session.getAttribute(BlogAppConstants.AUTH_TOKEN_JWT);
     headers.setBearerAuth(jwtToken); // attach JWT
-
     return headers;
   }
 }

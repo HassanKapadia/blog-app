@@ -1,0 +1,19 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+  <title>My Account</title>
+</head>
+<body>
+  <h2>My Account</h2>
+
+  <p><strong>Username:</strong> <span th:text="${user.username}"></span></p>
+  <p><strong>Email:</strong> <span th:text="${user.email}"></span></p>
+  <p><strong>Name:</strong> <span th:text="${user.name}"></span></p>
+  <p><strong>Joined On:</strong> 
+     <span th:text="${#dates.format(user.createdOn, 'dd MMM yyyy')}"></span>
+  </p>
+
+  <hr/>
+  <a href="/articles">← Back to Articles</a>
+</body>
+</html>

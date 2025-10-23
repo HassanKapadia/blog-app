@@ -8,6 +8,9 @@ import jakarta.servlet.http.HttpSession;
 import jakarta.validation.Valid;
 import java.util.Map;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpEntity;
+import org.springframework.http.HttpHeaders;
+import org.springframework.http.HttpMethod;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -99,5 +102,29 @@ public class UserViewController {
       model.addAttribute("error", "Signup failed: " + e.getMessage());
       return BlogAppConstants.USER_SIGNUP_PAGE;
     }
+  }
+
+  @GetMapping("/my-account")
+  public String myAccount(Model model) {
+    HttpHeaders headers = getDefaultHttpHeader();
+    HttpEntity<Void> entity = new HttpEntity<>(headers);
+    ResponseEntity<UserResponseDTO> response =
+        restTemplate.exchange(
+            BlogAppConstants.API_USER_ACCOUNT, HttpMethod.GET, entity, UserResponseDTO.class);
+    model.addAttribute("user", response.getBody());
+    return BlogAppConstants.USER_ACCOUNT_PAGE;
+  }
+
+  @GetMapping("/logout")
+  public String logout() {
+    session.invalidate();
+    return BlogAppConstants.REDIRECT_APP_ROOT;
+  }
+
+  private HttpHeaders getDefaultHttpHeader() {
+    HttpHeaders headers = new HttpHeaders();
+    String jwtToken = (String) session.getAttribute(BlogAppConstants.AUTH_TOKEN_JWT);
+    headers.setBearerAuth(jwtToken); // attach JWT
+    return headers;
   }
 }

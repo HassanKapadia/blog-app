@@ -5,6 +5,7 @@ import com.hancy.app.dto.user.LoginUserDTO;
 import com.hancy.app.dto.user.UpdateUserDTO;
 import com.hancy.app.model.User;
 import com.hancy.app.repo.UserRepository;
+import java.util.Date;
 import java.util.List;
 import java.util.Optional;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -52,7 +53,7 @@ public class UserServiceImpl implements UserService {
     user.setPassword(createUser.getPassword());
     user.setBio(createUser.getBio());
     user.setImage(createUser.getImage());
-
+    user.setCreatedOn(new Date());
     return userRepo.save(user);
   }
 

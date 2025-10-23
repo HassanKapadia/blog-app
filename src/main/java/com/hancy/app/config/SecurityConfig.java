@@ -40,7 +40,8 @@ public class SecurityConfig {
                     .permitAll())
 
         // Add JWT authentication filter before the default UsernamePasswordAuthenticationFilter
-        .addFilterBefore(jwtAuthFilter, UsernamePasswordAuthenticationFilter.class);
+        .addFilterBefore(jwtAuthFilter, UsernamePasswordAuthenticationFilter.class)
+        .logout(logout -> logout.disable());
 
     return http.build();
   }

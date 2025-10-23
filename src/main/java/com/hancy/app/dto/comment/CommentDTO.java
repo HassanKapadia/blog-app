@@ -1,8 +1,10 @@
 package com.hancy.app.dto.comment;
 
+import jakarta.validation.constraints.NotNull;
+
 public class CommentDTO {
 
-  private String comment;
+  @NotNull private String comment;
 
   public CommentDTO() {}
 

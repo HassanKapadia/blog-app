@@ -9,6 +9,7 @@ import com.hancy.app.model.User;
 import com.hancy.app.security.JwtTokenUtil;
 import com.hancy.app.service.user.UserService;
 import com.hancy.app.service.user.UserServiceImpl.UserNotFoundException;
+import jakarta.servlet.http.HttpServletRequest;
 import java.net.URI;
 import java.util.HashMap;
 import java.util.List;
@@ -60,6 +61,16 @@ public class UserRestController {
   public ResponseEntity<List<UserResponseDTO>> getAllUsers() {
     List<User> userList = userService.getAllUsers();
     return ResponseEntity.ok().body(UserResponseDTO.createResponse(userList));
+  }
+
+  @GetMapping("/account")
+  public ResponseEntity<UserResponseDTO> getUserAccountDetails(HttpServletRequest request) {
+    Long userId = (Long) request.getAttribute(BlogAppConstants.AUTH_USER_ID);
+    if (userId == null) {
+      return ResponseEntity.status(401).build();
+    }
+    User user = userService.getUserById(userId);
+    return ResponseEntity.ok().body(UserResponseDTO.createResponse(user));
   }
 
   @ExceptionHandler
