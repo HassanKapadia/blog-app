@@ -4,6 +4,7 @@ import com.hancy.app.common.constants.BlogAppConstants;
 import com.hancy.app.common.dto.ErrorResponseDTO;
 import com.hancy.app.dto.article.ArticleResponseDTO;
 import com.hancy.app.dto.article.CreateArticleDTO;
+import com.hancy.app.dto.article.UpdateArticleDTO;
 import com.hancy.app.model.Article;
 import com.hancy.app.service.article.ArticleService;
 import com.hancy.app.service.article.ArticleServiceImpl.ArticleNotFoundException;
@@ -13,10 +14,12 @@ import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseStatus;
@@ -62,6 +65,34 @@ public class ArticleRestController {
     URI createdArticleURI = URI.create(BlogAppConstants.API_ARTICLE + "/" + createdArticle.getId());
     return ResponseEntity.created(createdArticleURI)
         .body(ArticleResponseDTO.createResponse(createdArticle));
+  }
+
+  @PutMapping("/{id}")
+  public ResponseEntity<ArticleResponseDTO> updateArticle(
+      @PathVariable("id") Long articleId,
+      @RequestBody UpdateArticleDTO updateArticle,
+      HttpServletRequest request)
+      throws IllegalAccessException {
+    Long userId =
+        (Long)
+            request.getAttribute(
+                BlogAppConstants.AUTH_USER_ID); // Attribute set by JwtAuthenticationFilter
+
+    Article updatedArticle = articleService.updateArticle(userId, articleId, updateArticle);
+    return ResponseEntity.ok().body(ArticleResponseDTO.createResponse(updatedArticle));
+  }
+
+  @DeleteMapping("/{id}")
+  public ResponseEntity<Void> deleteArticle(
+      @PathVariable("id") Long articleId, HttpServletRequest request)
+      throws IllegalAccessException {
+    Long userId =
+        (Long)
+            request.getAttribute(
+                BlogAppConstants.AUTH_USER_ID); // Attribute set by JwtAuthenticationFilter
+
+    articleService.deleteArticle(userId, articleId);
+    return ResponseEntity.noContent().build();
   }
 
   @ExceptionHandler

@@ -37,6 +37,8 @@ public class Article {
 
   @CreatedDate private Date createdOn;
 
+  private Date updatedOn;
+
   @ManyToOne(
       fetch = FetchType.LAZY,
       cascade = {CascadeType.PERSIST, CascadeType.MERGE})
@@ -98,6 +100,14 @@ public class Article {
 
   public void setCreatedOn(Date createdOn) {
     this.createdOn = createdOn;
+  }
+
+  public Date getUpdatedOn() {
+    return updatedOn;
+  }
+
+  public void setUpdatedOn(Date updatedOn) {
+    this.updatedOn = updatedOn;
   }
 
   public User getAuthor() {

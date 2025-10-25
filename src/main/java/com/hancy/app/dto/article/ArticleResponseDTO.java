@@ -15,6 +15,7 @@ public class ArticleResponseDTO {
   private String subTitle;
   private String content;
   private Date createdOn;
+  private Date updatedOn;
   private UserResponseDTO author;
   private List<CommentResponseDTO> commentList = new ArrayList<>();
 
@@ -58,6 +59,14 @@ public class ArticleResponseDTO {
     this.createdOn = createdOn;
   }
 
+  public Date getUpdatedOn() {
+    return updatedOn;
+  }
+
+  public void setUpdatedOn(Date updatedOn) {
+    this.updatedOn = updatedOn;
+  }
+
   public UserResponseDTO getAuthor() {
     return author;
   }
@@ -85,6 +94,7 @@ public class ArticleResponseDTO {
     }
     articleResponseDTO.setCommentList(CommentResponseDTO.createResponse(article.getCommentList()));
     articleResponseDTO.setCreatedOn(article.getCreatedOn());
+    articleResponseDTO.setUpdatedOn(article.getUpdatedOn());
     return articleResponseDTO;
   }
 

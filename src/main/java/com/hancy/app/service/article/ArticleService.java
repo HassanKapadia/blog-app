@@ -17,4 +17,6 @@ public interface ArticleService {
       throws IllegalAccessException;
 
   public Article getArticleById(Long articleId);
+
+  public void deleteArticle(Long authorId, Long articleId) throws IllegalAccessException;
 }

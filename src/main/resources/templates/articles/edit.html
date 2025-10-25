@@ -1,0 +1,25 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+  <title>Edit Article</title>
+</head>
+<body>
+<h2>Edit Article</h2>
+
+<form th:action="@{'/articles/' + ${articleForm.id} + '/edit'}" method="post" th:object="${articleForm}">
+  <label>Title:</label><br/>
+  <input type="text" th:field="*{title}" required /><br/><br/>
+
+  <label>Subtitle:</label><br/>
+  <input type="text" th:field="*{subTitle}" placeholder="Optional subtitle" /><br/><br/>
+
+  <label>Content:</label><br/>
+  <textarea th:field="*{content}" rows="6" cols="50" required></textarea><br/><br/>
+
+  <button type="submit">Update</button>
+</form>
+
+<br/>
+<a th:href="@{'/articles/' + ${articleForm.id}}">Cancel</a>
+</body>
+</html>

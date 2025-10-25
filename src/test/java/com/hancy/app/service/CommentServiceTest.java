@@ -47,7 +47,7 @@ public class CommentServiceTest {
 
   @Test
   public void canCreateComment() {
-    String expectedSlug = article.getTitle().toLowerCase().replace("\\s+", "-");
+    String expectedSlug = article.getTitle().toLowerCase().replaceAll("\\s+", "-");
 
     Assertions.assertEquals("hassank", comment.getCommentor().getUsername());
     Assertions.assertEquals(expectedSlug, comment.getArticle().getSlug());

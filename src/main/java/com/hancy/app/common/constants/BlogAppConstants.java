@@ -31,6 +31,7 @@ public class BlogAppConstants {
   public static final String ARTICLE_LIST_PAGE = "articles/list";
   public static final String ARTICLE_DETAIL_PAGE = "articles/detail";
   public static final String ARTICLE_CREATE_PAGE = "articles/create";
+  public static final String ARTICLE_EDIT_PAGE = "articles/edit";
 
   // Redirect thymeleaf pages
   public static final String REDIRECT_APP_ROOT = "redirect:/blog-app";

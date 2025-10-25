@@ -33,7 +33,7 @@ public class CommentRepositoryTests {
 
     createArticle();
     String title = "Article 1";
-    String slug = title.toLowerCase().replace("\\s+", "-");
+    String slug = title.toLowerCase().replaceAll("\\s+", "-");
     Article article = articleRepo.findBySlug(slug).get();
     comment.setArticle(article);
 
@@ -54,7 +54,7 @@ public class CommentRepositoryTests {
   protected void createArticle() {
     User author = userRepo.findByUsername("hassank").get();
     String title = "Article 1";
-    String slug = title.toLowerCase().replace("\\s+", "-");
+    String slug = title.toLowerCase().replaceAll("\\s+", "-");
     Article article = new Article();
     article.setTitle(title);
     article.setSlug(slug);

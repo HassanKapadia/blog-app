@@ -50,7 +50,7 @@ public class ArticleServiceImpl implements ArticleService {
     article.setContent(createArticle.getContent());
     article.setCreatedOn(new Date());
 
-    String slug = article.getTitle().toLowerCase().replace("\\s+", "-");
+    String slug = article.getTitle().toLowerCase().replaceAll("\\s+", "-");
     article.setSlug(slug);
 
     return articleRepo.save(article);
@@ -74,7 +74,7 @@ public class ArticleServiceImpl implements ArticleService {
 
     if (updateArticle.getTitle() != null) {
       savedArticle.setTitle(updateArticle.getTitle());
-      String slug = savedArticle.getTitle().toLowerCase().replace("\\s+", "-");
+      String slug = savedArticle.getTitle().toLowerCase().replaceAll("\\s+", "-");
       savedArticle.setSlug(slug);
     }
 
@@ -86,6 +86,8 @@ public class ArticleServiceImpl implements ArticleService {
       savedArticle.setContent(updateArticle.getContent());
     }
 
+    savedArticle.setUpdatedOn(new Date());
+
     return articleRepo.save(savedArticle);
   }
 
@@ -96,6 +98,20 @@ public class ArticleServiceImpl implements ArticleService {
       throw new ArticleNotFoundException(articleId);
     }
     return article.get();
+  }
+
+  @Override
+  public void deleteArticle(Long authorId, Long articleId) throws IllegalAccessException {
+    Article article =
+        articleRepo.findById(articleId).orElseThrow(() -> new ArticleNotFoundException(articleId));
+
+    User user = userSerivce.getUserById(authorId);
+
+    if (!user.equals(article.getAuthor())) {
+      throw new IllegalAccessException("User: " + user.getName() + " cannot delete the article.");
+    }
+
+    articleRepo.delete(article);
   }
 
   public static class ArticleNotFoundException extends IllegalArgumentException {

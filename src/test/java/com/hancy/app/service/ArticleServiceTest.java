@@ -29,7 +29,7 @@ public class ArticleServiceTest {
     Assertions.assertEquals("hassank", author.getUsername());
 
     CreateArticleDTO createArticle = createArticle();
-    String slug = createArticle.getTitle().toLowerCase().replace("\\s+", "-");
+    String slug = createArticle.getTitle().toLowerCase().replaceAll("\\s+", "-");
     Article article = articleService.createArticle(author.getId(), createArticle);
     Assertions.assertEquals(slug, article.getSlug());
   }
