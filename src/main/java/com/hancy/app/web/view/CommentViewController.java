@@ -50,6 +50,44 @@ public class CommentViewController {
         + articleId; // This will redirect to view article endpoint
   }
 
+  @PostMapping("/{commentId}/edit")
+  public String updateComment(
+      @PathVariable("articleId") Long articleId,
+      @PathVariable("commentId") Long commentId,
+      @RequestParam("updatedComment") String updatedCommentText,
+      HttpSession session) {
+    CommentDTO commentDTO = new CommentDTO();
+    commentDTO.setComment(updatedCommentText);
+
+    HttpHeaders headers = getDefaultHttpHeader(session);
+    HttpEntity<CommentDTO> entity = new HttpEntity<>(commentDTO, headers);
+
+    String updateCommentEndpoint =
+        String.format(BlogAppConstants.API_COMMENT_DETAIL, articleId, commentId);
+    restTemplate.exchange(updateCommentEndpoint, HttpMethod.PUT, entity, CommentResponseDTO.class);
+
+    return BlogAppConstants.REDIRECT_ARTICLES
+        + "/"
+        + articleId; // This will redirect to view article endpoint
+  }
+
+  @PostMapping("/{commentId}/delete")
+  public String deleteComment(
+      @PathVariable("articleId") Long articleId,
+      @PathVariable("commentId") Long commentId,
+      HttpSession session) {
+    HttpHeaders headers = getDefaultHttpHeader(session);
+    HttpEntity<Void> entity = new HttpEntity<>(headers);
+
+    String deleteCommentEndpoint =
+        String.format(BlogAppConstants.API_COMMENT_DETAIL, articleId, commentId);
+    restTemplate.exchange(deleteCommentEndpoint, HttpMethod.DELETE, entity, Void.class);
+
+    return BlogAppConstants.REDIRECT_ARTICLES
+        + "/"
+        + articleId; // This will redirect to view article endpoint
+  }
+
   private HttpHeaders getDefaultHttpHeader(HttpSession session) {
     HttpHeaders headers = new HttpHeaders();
     String jwtToken = (String) session.getAttribute(BlogAppConstants.AUTH_TOKEN_JWT);

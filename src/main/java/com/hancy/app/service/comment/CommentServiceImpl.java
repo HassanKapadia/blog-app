@@ -64,6 +64,7 @@ public class CommentServiceImpl implements CommentService {
           "Comment does not belong to the article: " + article.getTitle());
     }
     savedComment.setComment(updateCommentText);
+    savedComment.setUpdatedOn(new Date());
 
     return commentRepo.save(savedComment);
   }
@@ -80,6 +81,28 @@ public class CommentServiceImpl implements CommentService {
     User commentor = userService.getUserById(commentorId);
     Optional<List<Comment>> commentList = commentRepo.findByCommentor(commentor);
     return commentList.orElse(new ArrayList<>());
+  }
+
+  @Override
+  public void deleteComment(Long commentorId, Long articleId, Long commentId)
+      throws IllegalAccessException {
+    Comment comment =
+        commentRepo.findById(commentId).orElseThrow(() -> new CommentNotFoundException(commentId));
+
+    User commentor = userService.getUserById(commentorId);
+    Article article = articleService.getArticleById(articleId);
+
+    if (!commentor.equals(comment.getCommentor())) {
+      throw new IllegalAccessException(
+          "Commentor: " + commentor.getName() + " cannot delete the comment");
+    }
+
+    if (!comment.getArticle().equals(article)) {
+      throw new IllegalAccessException(
+          "Comment does not belong to the article: " + article.getTitle());
+    }
+
+    commentRepo.delete(comment);
   }
 
   public static class CommentNotFoundException extends IllegalArgumentException {

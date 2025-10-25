@@ -15,6 +15,7 @@ public class UserResponseDTO {
   private String bio;
   private String image;
   private Date createdOn;
+  private Date updatedOn;
 
   public Long getId() {
     return id;
@@ -72,6 +73,14 @@ public class UserResponseDTO {
     this.createdOn = createdOn;
   }
 
+  public Date getUpdatedOn() {
+    return updatedOn;
+  }
+
+  public void setUpdatedOn(Date updatedOn) {
+    this.updatedOn = updatedOn;
+  }
+
   public static UserResponseDTO createResponse(User user) {
     UserResponseDTO userResponseDTO = new UserResponseDTO();
     userResponseDTO.setId(user.getId());
@@ -81,6 +90,7 @@ public class UserResponseDTO {
     userResponseDTO.setBio(user.getBio());
     userResponseDTO.setCreatedOn(user.getCreatedOn());
     userResponseDTO.setImage(user.getImage());
+    userResponseDTO.setUpdatedOn(user.getUpdatedOn());
     return userResponseDTO;
   }
 

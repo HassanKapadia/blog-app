@@ -21,6 +21,7 @@ public class BlogAppConstants {
   // Comment API endpoints
   public static final String API_COMMENT = API_ARTICLE + "/%s" + "/comments";
   public static final String COMMENT_BASE_URL = BASE_URL + API_COMMENT;
+  public static final String API_COMMENT_DETAIL = COMMENT_BASE_URL + "/%s";
 
   // User thymeleaf pages
   public static final String USER_SIGNUP_PAGE = "users/signup";

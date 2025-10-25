@@ -11,6 +11,7 @@ public class CommentResponseDTO {
   private Long id;
   private String comment;
   private Date createdOn;
+  private Date updatedOn;
   private UserResponseDTO commentor;
 
   public Long getId() {
@@ -37,6 +38,14 @@ public class CommentResponseDTO {
     this.createdOn = createdOn;
   }
 
+  public Date getUpdatedOn() {
+    return updatedOn;
+  }
+
+  public void setUpdatedOn(Date updatedOn) {
+    this.updatedOn = updatedOn;
+  }
+
   public UserResponseDTO getCommentor() {
     return commentor;
   }
@@ -53,6 +62,7 @@ public class CommentResponseDTO {
       commentResponseDTO.setCommentor(UserResponseDTO.createResponse(comment.getCommentor()));
     }
     commentResponseDTO.setCreatedOn(comment.getCreatedOn());
+    commentResponseDTO.setUpdatedOn(comment.getUpdatedOn());
     return commentResponseDTO;
   }
 

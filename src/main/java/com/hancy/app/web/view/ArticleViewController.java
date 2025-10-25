@@ -87,8 +87,8 @@ public class ArticleViewController {
       ResponseEntity<ArticleResponseDTO> response =
           restTemplate.exchange(
               BlogAppConstants.ARTICLE_BASE_URL, HttpMethod.POST, entity, ArticleResponseDTO.class);
-
-      return BlogAppConstants.REDIRECT_ARTICLES;
+      Long articleId = response.getBody().getId();
+      return BlogAppConstants.REDIRECT_ARTICLES + "/" + articleId;
     } catch (Exception e) {
       model.addAttribute("error", "Failed to create article: " + e.getMessage());
       return BlogAppConstants.ARTICLE_CREATE_PAGE;

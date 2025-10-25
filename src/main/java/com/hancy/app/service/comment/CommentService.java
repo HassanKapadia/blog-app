@@ -14,4 +14,7 @@ public interface CommentService {
   public List<Comment> getCommentsByArticle(Long articleId);
 
   public List<Comment> getCommentsByCommentor(Long commentorId);
+
+  public void deleteComment(Long commentorId, Long articleId, Long commentId)
+      throws IllegalAccessException;
 }

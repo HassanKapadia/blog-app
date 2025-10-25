@@ -49,6 +49,8 @@ public class User {
 
   @CreatedDate private Date createdOn;
 
+  private Date updatedOn;
+
   @OneToMany(
       mappedBy = "author",
       fetch = FetchType.LAZY,
@@ -125,6 +127,14 @@ public class User {
 
   public void setCreatedOn(Date createdOn) {
     this.createdOn = createdOn;
+  }
+
+  public Date getUpdatedOn() {
+    return updatedOn;
+  }
+
+  public void setUpdatedOn(Date updatedOn) {
+    this.updatedOn = updatedOn;
   }
 
   public List<Article> getArticleList() {
