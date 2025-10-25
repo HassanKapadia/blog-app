@@ -49,7 +49,8 @@ public class Article {
   @OneToMany(
       mappedBy = "article",
       fetch = FetchType.LAZY,
-      cascade = {CascadeType.PERSIST, CascadeType.MERGE, CascadeType.REMOVE})
+      cascade = CascadeType.ALL,
+      orphanRemoval = true)
   private List<Comment> commentList = new ArrayList<>();
 
   public Article() {}

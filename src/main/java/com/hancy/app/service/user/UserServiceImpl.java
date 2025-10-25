@@ -79,6 +79,8 @@ public class UserServiceImpl implements UserService {
     if (updateUser.getImage() != null) {
       savedUser.setImage(updateUser.getImage());
     }
+
+    savedUser.setUpdatedOn(new Date());
     return userRepo.save(savedUser);
   }
 
@@ -93,6 +95,12 @@ public class UserServiceImpl implements UserService {
       throw new IllegalAccessError("Incorrect username or password!");
     }
     return savedUser;
+  }
+
+  @Override
+  public void deleteUser(Long userId) {
+    User user = userRepo.findById(userId).orElseThrow(() -> new UserNotFoundException(userId));
+    userRepo.delete(user);
   }
 
   public static class UserNotFoundException extends IllegalArgumentException {

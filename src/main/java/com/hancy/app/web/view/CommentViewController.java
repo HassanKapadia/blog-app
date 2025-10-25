@@ -4,7 +4,6 @@ import com.hancy.app.common.constants.BlogAppConstants;
 import com.hancy.app.dto.comment.CommentDTO;
 import com.hancy.app.dto.comment.CommentResponseDTO;
 import jakarta.servlet.http.HttpSession;
-import java.util.Map;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpEntity;
 import org.springframework.http.HttpHeaders;
@@ -32,10 +31,6 @@ public class CommentViewController {
       @PathVariable("articleId") Long articleId,
       @RequestParam("comment") String commentText,
       HttpSession session) {
-    Map<String, Object> authUser =
-        (Map<String, Object>) session.getAttribute(BlogAppConstants.AUTH_USER);
-    Long userId = ((Number) authUser.get("id")).longValue();
-
     CommentDTO commentDTO = new CommentDTO();
     commentDTO.setComment(commentText);
 

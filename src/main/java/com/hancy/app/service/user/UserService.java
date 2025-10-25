@@ -19,4 +19,6 @@ public interface UserService {
   public User updateUser(Long userId, UpdateUserDTO updateUser);
 
   public User loginUser(LoginUserDTO loginUser);
+
+  public void deleteUser(Long userId);
 }

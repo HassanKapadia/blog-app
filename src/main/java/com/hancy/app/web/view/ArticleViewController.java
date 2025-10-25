@@ -4,9 +4,9 @@ import com.hancy.app.common.constants.BlogAppConstants;
 import com.hancy.app.dto.article.ArticleResponseDTO;
 import com.hancy.app.dto.article.CreateArticleDTO;
 import com.hancy.app.dto.article.UpdateArticleDTO;
+import com.hancy.app.dto.user.UserResponseDTO;
 import jakarta.servlet.http.HttpSession;
 import java.util.List;
-import java.util.Map;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpEntity;
 import org.springframework.http.HttpHeaders;
@@ -35,8 +35,7 @@ public class ArticleViewController {
 
   @GetMapping
   public String listArticles(Model model, HttpSession session) {
-    Map<String, Object> authUser =
-        (Map<String, Object>) session.getAttribute(BlogAppConstants.AUTH_USER);
+    UserResponseDTO authUser = (UserResponseDTO) session.getAttribute(BlogAppConstants.AUTH_USER);
 
     HttpHeaders headers = getDefaultHttpHeader(session);
     HttpEntity<Void> entity = new HttpEntity<>(headers);
@@ -77,9 +76,8 @@ public class ArticleViewController {
   public String handleCreateArticle(
       @ModelAttribute("articleForm") CreateArticleDTO article, Model model, HttpSession session) {
     try {
-      Map<String, Object> authUser =
-          (Map<String, Object>) session.getAttribute(BlogAppConstants.AUTH_USER);
-      article.setAuthorId(((Number) authUser.get("id")).longValue());
+      UserResponseDTO authUser = (UserResponseDTO) session.getAttribute(BlogAppConstants.AUTH_USER);
+      article.setAuthorId(authUser.getId());
 
       HttpHeaders headers = getDefaultHttpHeader(session);
 

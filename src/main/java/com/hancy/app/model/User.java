@@ -54,13 +54,15 @@ public class User {
   @OneToMany(
       mappedBy = "author",
       fetch = FetchType.LAZY,
-      cascade = {CascadeType.MERGE, CascadeType.PERSIST})
+      cascade = CascadeType.ALL,
+      orphanRemoval = true)
   private List<Article> articleList = new ArrayList<>();
 
   @OneToMany(
       mappedBy = "commentor",
       fetch = FetchType.LAZY,
-      cascade = {CascadeType.MERGE, CascadeType.PERSIST})
+      cascade = CascadeType.ALL,
+      orphanRemoval = true)
   private List<Comment> commentList = new ArrayList<>();
 
   public User() {}

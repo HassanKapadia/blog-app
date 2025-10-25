@@ -1,6 +1,7 @@
 package com.hancy.app.dto.user;
 
 import jakarta.validation.constraints.NotNull;
+import java.util.Date;
 
 public class CreateUserDTO {
 
@@ -8,6 +9,8 @@ public class CreateUserDTO {
   @NotNull private String username;
   @NotNull private String password;
   @NotNull private String email;
+  private Date createdOn;
+  private Date updatedOn;
   private String bio;
   private String image;
 
@@ -59,5 +62,21 @@ public class CreateUserDTO {
 
   public void setImage(String image) {
     this.image = image;
+  }
+
+  public Date getCreatedOn() {
+    return createdOn;
+  }
+
+  public void setCreatedOn(Date createdOn) {
+    this.createdOn = createdOn;
+  }
+
+  public Date getUpdatedOn() {
+    return updatedOn;
+  }
+
+  public void setUpdatedOn(Date updatedOn) {
+    this.updatedOn = updatedOn;
   }
 }

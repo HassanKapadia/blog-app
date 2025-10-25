@@ -2,11 +2,12 @@ package com.hancy.app.web.view;
 
 import com.hancy.app.common.constants.BlogAppConstants;
 import com.hancy.app.dto.user.CreateUserDTO;
+import com.hancy.app.dto.user.LoginResponseDTO;
 import com.hancy.app.dto.user.LoginUserDTO;
+import com.hancy.app.dto.user.UpdateUserDTO;
 import com.hancy.app.dto.user.UserResponseDTO;
 import jakarta.servlet.http.HttpSession;
 import jakarta.validation.Valid;
-import java.util.Map;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpEntity;
 import org.springframework.http.HttpHeaders;
@@ -65,16 +66,15 @@ public class UserViewController {
     }
 
     try {
-      ResponseEntity<Map> response =
-          restTemplate.postForEntity(BlogAppConstants.API_USER_LOGIN, user, Map.class);
+      ResponseEntity<LoginResponseDTO> response =
+          restTemplate.postForEntity(BlogAppConstants.API_USER_LOGIN, user, LoginResponseDTO.class);
 
-      Map<String, Object> body = response.getBody();
-      Map<String, Object> userData = (Map<String, Object>) body.get(BlogAppConstants.AUTH_USER);
+      UserResponseDTO authUser = response.getBody().getAuthUser();
+      String jwtToken = response.getBody().getJwtToken();
 
-      // Add user data and token to the session for client
-      session.setAttribute(
-          BlogAppConstants.AUTH_TOKEN_JWT, body.get(BlogAppConstants.AUTH_TOKEN_JWT));
-      session.setAttribute(BlogAppConstants.AUTH_USER, userData);
+      // Add auth user data and token to the session for client
+      session.setAttribute(BlogAppConstants.AUTH_TOKEN_JWT, jwtToken);
+      session.setAttribute(BlogAppConstants.AUTH_USER, authUser);
 
       return BlogAppConstants.REDIRECT_ARTICLES;
     } catch (Exception e) {
@@ -113,6 +113,40 @@ public class UserViewController {
             BlogAppConstants.API_USER_ACCOUNT, HttpMethod.GET, entity, UserResponseDTO.class);
     model.addAttribute("user", response.getBody());
     return BlogAppConstants.USER_ACCOUNT_PAGE;
+  }
+
+  @PostMapping("/my-account/update")
+  public String updateAccount(@ModelAttribute UpdateUserDTO updateUserDTO, Model model) {
+    HttpHeaders headers = getDefaultHttpHeader();
+    HttpEntity<UpdateUserDTO> entity = new HttpEntity<>(updateUserDTO, headers);
+    try {
+      ResponseEntity<UserResponseDTO> response =
+          restTemplate.exchange(
+              BlogAppConstants.API_USER_ACCOUNT, HttpMethod.PUT, entity, UserResponseDTO.class);
+      UserResponseDTO updatedUser = response.getBody();
+
+      session.setAttribute(BlogAppConstants.AUTH_USER, updatedUser);
+      model.addAttribute("user", updatedUser);
+      model.addAttribute("message", "Account updated successfully!");
+      return BlogAppConstants.USER_ACCOUNT_PAGE;
+    } catch (Exception e) {
+      model.addAttribute("error", "Failed to update account: " + e.getMessage());
+      return BlogAppConstants.USER_ACCOUNT_PAGE;
+    }
+  }
+
+  @PostMapping("/my-account/delete")
+  public String deleteAccount() {
+    HttpHeaders headers = getDefaultHttpHeader();
+    HttpEntity<Void> entity = new HttpEntity<>(headers);
+    try {
+      restTemplate.exchange(
+          BlogAppConstants.API_USER_ACCOUNT, HttpMethod.DELETE, entity, Void.class);
+      session.invalidate();
+      return BlogAppConstants.REDIRECT_APP_ROOT;
+    } catch (Exception e) {
+      return "redirect:/my-account?error=delete_failed";
+    }
   }
 
   @GetMapping("/logout")

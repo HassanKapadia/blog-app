@@ -3,7 +3,9 @@ package com.hancy.app.web;
 import com.hancy.app.common.constants.BlogAppConstants;
 import com.hancy.app.common.dto.ErrorResponseDTO;
 import com.hancy.app.dto.user.CreateUserDTO;
+import com.hancy.app.dto.user.LoginResponseDTO;
 import com.hancy.app.dto.user.LoginUserDTO;
+import com.hancy.app.dto.user.UpdateUserDTO;
 import com.hancy.app.dto.user.UserResponseDTO;
 import com.hancy.app.model.User;
 import com.hancy.app.security.JwtTokenUtil;
@@ -17,9 +19,11 @@ import java.util.Map;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
@@ -45,7 +49,7 @@ public class UserRestController {
   }
 
   @PostMapping("/login")
-  public ResponseEntity<Map<String, Object>> loginUser(@RequestBody LoginUserDTO loginUser) {
+  public ResponseEntity<LoginResponseDTO> loginUser(@RequestBody LoginUserDTO loginUser) {
     User savedUser = userService.loginUser(loginUser);
     UserResponseDTO userResponse = UserResponseDTO.createResponse(savedUser);
     String token = jwtTokenUtil.generateToken(userResponse.getId(), userResponse.getUsername());
@@ -54,7 +58,11 @@ public class UserRestController {
     response.put(BlogAppConstants.AUTH_USER, userResponse);
     response.put(BlogAppConstants.AUTH_TOKEN_JWT, token);
 
-    return ResponseEntity.ok(response);
+    LoginResponseDTO loginResponse = new LoginResponseDTO();
+    loginResponse.setAuthUser(userResponse);
+    loginResponse.setJwtToken(token);
+
+    return ResponseEntity.ok().body(loginResponse);
   }
 
   @GetMapping("/")
@@ -71,6 +79,27 @@ public class UserRestController {
     }
     User user = userService.getUserById(userId);
     return ResponseEntity.ok().body(UserResponseDTO.createResponse(user));
+  }
+
+  @PutMapping("/account")
+  public ResponseEntity<UserResponseDTO> updateUserAccount(
+      @RequestBody UpdateUserDTO updateUserDTO, HttpServletRequest request) {
+    Long userId = (Long) request.getAttribute(BlogAppConstants.AUTH_USER_ID);
+    if (userId == null) {
+      return ResponseEntity.status(401).build();
+    }
+    User updatedUser = userService.updateUser(userId, updateUserDTO);
+    return ResponseEntity.ok().body(UserResponseDTO.createResponse(updatedUser));
+  }
+
+  @DeleteMapping("/account")
+  public ResponseEntity<UserResponseDTO> deleteUserAccount(HttpServletRequest request) {
+    Long userId = (Long) request.getAttribute(BlogAppConstants.AUTH_USER_ID);
+    if (userId == null) {
+      return ResponseEntity.status(401).build();
+    }
+    userService.deleteUser(userId);
+    return ResponseEntity.noContent().build();
   }
 
   @ExceptionHandler

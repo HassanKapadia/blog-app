@@ -1,11 +1,15 @@
 package com.hancy.app.dto.user;
 
+import java.util.Date;
+
 public class UpdateUserDTO {
 
   private String name;
   private String email;
   private String bio;
   private String image;
+  private Date createdOn;
+  private Date updatedOn;
 
   public UpdateUserDTO() {}
 
@@ -39,5 +43,21 @@ public class UpdateUserDTO {
 
   public void setImage(String image) {
     this.image = image;
+  }
+
+  public Date getCreatedOn() {
+    return createdOn;
+  }
+
+  public void setCreatedOn(Date createdOn) {
+    this.createdOn = createdOn;
+  }
+
+  public Date getUpdatedOn() {
+    return updatedOn;
+  }
+
+  public void setUpdatedOn(Date updatedOn) {
+    this.updatedOn = updatedOn;
   }
 }
