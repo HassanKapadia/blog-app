@@ -1,27 +1,35 @@
 <!DOCTYPE html>
 <html xmlns:th="http://www.thymeleaf.org">
 <head>
-  <title>Create Article</title>
+<title>Create Article</title>
+<link rel="stylesheet" th:href="@{/css/style.css}">
 </head>
 <body>
-<h2>Create a New Article</h2>
+	<div class="navbar">
+		<a href="/articles">Articles</a> | <a href="/logout">Logout</a>
+	</div>
 
-<div th:if="${error}" style="color:red" th:text="${error}"></div>
+	<div class="container">
+		<h2>Create a New Article</h2>
 
-<form th:action="@{/articles/create}" method="post" th:object="${articleForm}">
-  <label>Title:</label>
-  <input type="text" th:field="*{title}" required /><br/>
+		<div th:if="${error}" class="error" th:text="${error}"></div>
 
-  <label>Subtitle:</label><br/>
-  <input type="text" th:field="*{subTitle}" placeholder="Optional subtitle" /><br/><br/>
+		<form th:action="@{/articles/create}" method="post"
+			th:object="${articleForm}">
+			<label>Title:</label> <input type="text" th:field="*{title}" required /><br />
 
-  <label>Content:</label>
-  <textarea th:field="*{content}" rows="6" cols="50" required></textarea><br/>
+			<label>Subtitle:</label><br /> <input type="text"
+				th:field="*{subTitle}" placeholder="Optional subtitle" /><br /> <br />
+			<label>Content:</label>
+			<textarea th:field="*{content}" rows="6" cols="50" required></textarea>
+			<br />
 
-  <button type="submit">Publish</button>
-</form>
+			<button type="submit">Publish</button>
+		</form>
 
-<br/>
-<a href="/articles">Back to Articles</a>
+		<div class="text-center mt-2">
+			<a href="/articles">← Back to Articles</a>
+		</div>
+	</div>
 </body>
 </html>

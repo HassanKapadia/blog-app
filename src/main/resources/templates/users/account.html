@@ -1,45 +1,63 @@
 <!DOCTYPE html>
 <html xmlns:th="http://www.thymeleaf.org">
 <head>
-  <title>My Account</title>
+<title>My Account</title>
+<link rel="stylesheet" th:href="@{/css/style.css}">
 </head>
 <body>
-  <h2>My Account</h2>
+	<div class="navbar">
+		<a href="/articles">Articles</a> | <a href="/logout">Logout</a>
+	</div>
 
-  <p><strong>Username:</strong> <span th:text="${user.username}"></span></p>
-  <p><strong>Email:</strong> <span th:text="${user.email}"></span></p>
-  <p><strong>Name:</strong> <span th:text="${user.name}"></span></p>
-  <p><strong>Bio:</strong> <span th:text="${user.bio} ?: '—'"></span></p>
-  <p><strong>Joined On:</strong> <span th:text="${#dates.format(user.createdOn, 'dd MMM yyyy')}"></span></p>
-  <p th:if="${user.updatedOn != null}">
-    <strong>Last Updated:</strong> <span th:text="${#dates.format(user.updatedOn, 'dd MMM yyyy HH:mm')}"></span>
-  </p>
+	<div class="container">
+		<h2>My Account</h2>
 
-  <hr/>
-  <h3>Edit Account</h3>
-  <form th:action="@{/my-account/update}" method="post">
-    <label>Name:</label><br/>
-    <input type="text" name="name" th:value="${user.name}" /><br/><br/>
+		<p>
+			<strong>Username:</strong> <span th:text="${user.username}"></span>
+		</p>
+		<p>
+			<strong>Email:</strong> <span th:text="${user.email}"></span>
+		</p>
+		<p>
+			<strong>Name:</strong> <span th:text="${user.name}"></span>
+		</p>
+		<p>
+			<strong>Bio:</strong> <span th:text="${user.bio} ?: '—'"></span>
+		</p>
+		<p>
+			<strong>Joined On:</strong> <span
+				th:text="${#dates.format(user.createdOn, 'dd MMM yyyy')}"></span>
+		</p>
+		<p th:if="${user.updatedOn != null}">
+			<strong>Last Updated:</strong> <span
+				th:text="${#dates.format(user.updatedOn, 'dd MMM yyyy HH:mm')}"></span>
+		</p>
 
-    <label>Email:</label><br/>
-    <input type="email" name="email" th:value="${user.email}" /><br/><br/>
+		<hr />
+		<h3>Edit Account</h3>
+		<form th:action="@{/my-account/update}" method="post">
+			<label>Name:</label><br /> <input type="text" name="name"
+				th:value="${user.name}" /> <label>Email:</label><br /> <input
+				type="email" name="email" th:value="${user.email}" /> <label>Bio:</label><br />
+			<textarea name="bio" rows="3" cols="40" th:text="${user.bio}"></textarea>
 
-    <label>Bio:</label><br/>
-    <textarea name="bio" rows="3" cols="40" th:text="${user.bio}"></textarea><br/><br/>
+			<label>Profile Image URL:</label><br /> <input type="text"
+				name="image" th:value="${user.image}" />
 
-    <label>Profile Image URL:</label><br/>
-    <input type="text" name="image" th:value="${user.image}" /><br/><br/>
+			<button type="submit">Update Account</button>
+		</form>
 
-    <button type="submit">Update Account</button>
-  </form>
+		<hr />
+		<form th:action="@{/my-account/delete}" method="post"
+			onsubmit="return confirm('Are you sure you want to delete your account permanently?');">
+			<button type="submit" style="color: red;">Delete Account</button>
+		</form>
 
-  <hr/>
-  <form th:action="@{/my-account/delete}" method="post"
-        onsubmit="return confirm('Are you sure you want to delete your account permanently?');">
-    <button type="submit" style="color: red;">Delete Account</button>
-  </form>
+		<hr />
+		<div class="text-center mt-2">
+			<a href="/articles">← Back to Articles</a>
+		</div>
 
-  <hr/>
-  <a href="/articles">← Back to Articles</a>
+	</div>
 </body>
 </html>

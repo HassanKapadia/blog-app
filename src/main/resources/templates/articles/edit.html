@@ -1,25 +1,32 @@
 <!DOCTYPE html>
 <html xmlns:th="http://www.thymeleaf.org">
 <head>
-  <title>Edit Article</title>
+<title>Edit Article</title>
+<link rel="stylesheet" th:href="@{/css/style.css}">
 </head>
 <body>
-<h2>Edit Article</h2>
+	<div class="navbar">
+		<a href="/articles">Articles</a> | <a href="/logout">Logout</a>
+	</div>
 
-<form th:action="@{'/articles/' + ${articleForm.id} + '/edit'}" method="post" th:object="${articleForm}">
-  <label>Title:</label><br/>
-  <input type="text" th:field="*{title}" required /><br/><br/>
+	<div class="container">
+		<h2>Edit Article</h2>
 
-  <label>Subtitle:</label><br/>
-  <input type="text" th:field="*{subTitle}" placeholder="Optional subtitle" /><br/><br/>
+		<form th:action="@{'/articles/' + ${articleForm.id} + '/edit'}"
+			method="post" th:object="${articleForm}">
+			<label>Title:</label><br /> <input type="text" th:field="*{title}"
+				required /><br /> <br /> <label>Subtitle:</label><br /> <input
+				type="text" th:field="*{subTitle}" placeholder="Optional subtitle" /><br />
+			<br /> <label>Content:</label><br />
+			<textarea th:field="*{content}" rows="6" cols="50" required></textarea>
+			<br /> <br />
 
-  <label>Content:</label><br/>
-  <textarea th:field="*{content}" rows="6" cols="50" required></textarea><br/><br/>
+			<button type="submit">Update</button>
+		</form>
 
-  <button type="submit">Update</button>
-</form>
-
-<br/>
-<a th:href="@{'/articles/' + ${articleForm.id}}">Cancel</a>
+		<div class="text-center mt-2">
+			<a th:href="@{'/articles/' + ${articleForm.id}}">Cancel</a>
+		</div>
+	</div>
 </body>
 </html>
