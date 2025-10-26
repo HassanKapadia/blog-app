@@ -4,6 +4,7 @@ import com.hancy.app.dto.user.CreateUserDTO;
 import com.hancy.app.dto.user.LoginUserDTO;
 import com.hancy.app.dto.user.UpdateUserDTO;
 import com.hancy.app.model.User;
+import com.hancy.app.service.user.UserServiceImpl.InvalidCredentialsException;
 import java.util.List;
 
 public interface UserService {
@@ -18,7 +19,7 @@ public interface UserService {
 
   public User updateUser(Long userId, UpdateUserDTO updateUser);
 
-  public User loginUser(LoginUserDTO loginUser);
+  public User loginUser(LoginUserDTO loginUser) throws InvalidCredentialsException;
 
   public void deleteUser(Long userId);
 }

@@ -10,6 +10,7 @@ import com.hancy.app.dto.user.UserResponseDTO;
 import com.hancy.app.model.User;
 import com.hancy.app.security.JwtTokenUtil;
 import com.hancy.app.service.user.UserService;
+import com.hancy.app.service.user.UserServiceImpl.InvalidCredentialsException;
 import com.hancy.app.service.user.UserServiceImpl.UserNotFoundException;
 import jakarta.servlet.http.HttpServletRequest;
 import java.net.URI;
@@ -49,7 +50,8 @@ public class UserRestController {
   }
 
   @PostMapping("/login")
-  public ResponseEntity<LoginResponseDTO> loginUser(@RequestBody LoginUserDTO loginUser) {
+  public ResponseEntity<LoginResponseDTO> loginUser(@RequestBody LoginUserDTO loginUser)
+      throws InvalidCredentialsException {
     User savedUser = userService.loginUser(loginUser);
     UserResponseDTO userResponse = UserResponseDTO.createResponse(savedUser);
     String token = jwtTokenUtil.generateToken(userResponse.getId(), userResponse.getUsername());
@@ -102,17 +104,26 @@ public class UserRestController {
     return ResponseEntity.noContent().build();
   }
 
-  @ExceptionHandler
+  @ExceptionHandler({
+    UserNotFoundException.class,
+    InvalidCredentialsException.class,
+    Exception.class
+  })
   public ResponseEntity<ErrorResponseDTO> manageErrorResponse(Exception ex) {
     HttpStatus status;
     String message;
 
     if (ex instanceof UserNotFoundException) {
       status = HttpStatus.NOT_FOUND;
+    } else if (ex instanceof InvalidCredentialsException) {
+      status = HttpStatus.UNAUTHORIZED;
     } else {
       status = HttpStatus.INTERNAL_SERVER_ERROR;
     }
-    message = ex.getLocalizedMessage();
+    message =
+        ex.getLocalizedMessage() != null
+            ? ex.getLocalizedMessage()
+            : "An unexpected error occurred";
     ErrorResponseDTO errorResponse = new ErrorResponseDTO(message);
     return ResponseEntity.status(status).body(errorResponse);
   }

@@ -16,9 +16,9 @@ import org.springframework.stereotype.Service;
 @Service
 public class CommentServiceImpl implements CommentService {
 
-  private CommentRepository commentRepo;
-  private ArticleService articleService;
-  private UserService userService;
+  private final CommentRepository commentRepo;
+  private final ArticleService articleService;
+  private final UserService userService;
 
   @Autowired
   public CommentServiceImpl(

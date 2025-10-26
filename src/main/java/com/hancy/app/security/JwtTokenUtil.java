@@ -1,5 +1,6 @@
 package com.hancy.app.security;
 
+import com.hancy.app.common.constants.BlogAppConstants;
 import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.Jws;
 import io.jsonwebtoken.Jwts;
@@ -20,7 +21,7 @@ public class JwtTokenUtil {
   public String generateToken(Long userId, String username) {
     return Jwts.builder()
         .setSubject(username)
-        .claim("userId", userId)
+        .claim(BlogAppConstants.AUTH_USER_ID, userId)
         .setIssuedAt(new Date())
         .setExpiration(new Date(System.currentTimeMillis() + EXPIRATION_MS))
         .signWith(key, SignatureAlgorithm.HS256)
@@ -32,7 +33,7 @@ public class JwtTokenUtil {
   }
 
   public Long extractUserId(String token) {
-    return validateToken(token).getBody().get("userId", Long.class);
+    return validateToken(token).getBody().get(BlogAppConstants.AUTH_USER_ID, Long.class);
   }
 
   public String extractUsername(String token) {

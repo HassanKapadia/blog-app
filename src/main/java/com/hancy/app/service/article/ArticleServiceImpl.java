@@ -15,8 +15,8 @@ import org.springframework.stereotype.Service;
 @Service
 public class ArticleServiceImpl implements ArticleService {
 
-  private ArticleRepository articleRepo;
-  private UserService userSerivce;
+  private final ArticleRepository articleRepo;
+  private final UserService userSerivce;
 
   @Autowired
   public ArticleServiceImpl(ArticleRepository articleRepo, UserService userSerivce) {
